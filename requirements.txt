@@ -1,0 +1,13 @@
+aiofiles
+Pillow
+humanize
+hachoir
+pyrofork==2.3.45
+TgCrypto
+dnspython
+aiohttp
+telethon
+psutil
+motor
+telethon
+pymongo[srv]==3.12.3
