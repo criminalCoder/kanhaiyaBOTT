@@ -15,6 +15,7 @@ from telethon.sessions import StringSession
 Lazyuserbot = TelegramClient(StringSession(USER_SESSION_STRING), API_ID, API_HASH)
    #   await lazydeveloperrsession.start()
 
+# lock = asyncio.Lock()
 
 @Client.on_message(filters.group & filters.text & filters.incoming & ~filters.command(['start']))
 async def message_handler(client, message):
@@ -31,7 +32,9 @@ async def message_handler(client, message):
          if not queryz:
                await message.reply("Please provide a valid search query.")
                return
-         # Start Telethon session
+         # # Start Telethon session
+         # if lock.locked:
+         #    await message.reply("Hello {message.from_user.mention} , PLease have some patience my love ")
          if not Lazyuserbot.is_connected():
             await Lazyuserbot.start()
          # await Lazyuserbot.start()
@@ -121,7 +124,7 @@ async def message_handler(client, message):
          #       ]
          #    )
          # result_message = "\n\n".join([f"✅ **Result {i + 1}:**\n{url}" for i, url in enumerate(search_results)])
-         result_message = "\n\n".join([f"<blockquote>🎥 <b>{movie_name}</b>\n<b>Link:</b> {target_url}</blockquote>" for movie_name, target_url in search_results])
+         result_message = "\n".join([f"<blockquote>📂 <b>{movie_name}</b>\n<b>Link:</b> {target_url}</blockquote>" for movie_name, target_url in search_results])
          print('got result')
          response = (
             f"**Search Results for '{queryz}':**\n\n"
@@ -141,7 +144,7 @@ async def message_handler(client, message):
                await txt.delete()
          await message.reply("I couldn't process your request. Please try again later.")
       finally:
-         await asyncio.sleep(1)
+         await asyncio.sleep(2)
          await Lazyuserbot.disconnect()
          if not Lazyuserbot.is_connected():
                print("Session is disconnected successfully!")
