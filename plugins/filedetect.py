@@ -40,20 +40,41 @@ async def message_handler(client, message):
          txt = await message.reply(f"**Searching for links matching:** `{queryz}` 🔍")
 
         # Start search logic
+         # search_results = []
+         # try:
+         #    # Search for messages containing the query term in the database channel
+         #    async for search_msg in Lazyuserbot.iter_messages(DB_CHANNEL, search=queryz, limit=5):
+         #       if search_msg.text:
+         #             # Look for a URL in the first line
+         #          match = re.match(r"(https?://[^\s]+)", search_msg.text)
+         #          if match:
+         #             search_results.append(match.group(1))  # Append the URL
+         # except Exception as e:
+         #       print(f"Error while searching messages: {e}")
+         #       await message.reply("An error occurred while searching.")
+         #       return
+         # Start search logic
          search_results = []
          try:
             # Search for messages containing the query term in the database channel
             async for search_msg in Lazyuserbot.iter_messages(DB_CHANNEL, search=queryz, limit=5):
                if search_msg.text:
-                     # Look for a URL in the first line
-                  match = re.match(r"(https?://[^\s]+)", search_msg.text)
-                  if match:
-                     search_results.append(match.group(1))  # Append the URL
+                  # Look for a URL in the first line and movie name in the second line
+                  lines = search_msg.text.split("\n")
+                  if len(lines) > 1:
+                        target_url = lines[0].strip()  # The first line is the URL
+                        movie_name = lines[1].strip()  # The second line is the movie name
+
+                        # Clean movie name by removing parentheses
+                        movie_name = re.sub(r"[()]", "", movie_name)
+
+                        # Append the formatted result: movie name and URL
+                        search_results.append((movie_name, target_url))
          except Exception as e:
                print(f"Error while searching messages: {e}")
                await message.reply("An error occurred while searching.")
                return
-
+         
         # Handle no results
          if not search_results:
             no_result_text = (
