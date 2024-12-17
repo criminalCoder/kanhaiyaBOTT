@@ -42,16 +42,17 @@ async def message_handler(client, message):
         # Start search logic
          search_results = []
          try:
-            async for search_term in AsyncIter(re.sub("__|\*", "", args).split()):
-               if len(search_term) > 2:
-                  async for search_msg in Lazyuserbot.iter_messages(DB_CHANNEL, limit=5, search=search_term):
-                     if search_msg.text:
-                        search_results.append(search_msg.text)
+            # Search for messages containing the query term in the database channel
+            async for search_msg in Lazyuserbot.iter_messages(DB_CHANNEL, search=queryz, limit=5):
+               if search_msg.text:
+                     # Look for a URL in the first line
+                  match = re.match(r"(https?://[^\s]+)", search_msg.text)
+                  if match:
+                     search_results.append(match.group(1))  # Append the URL
          except Exception as e:
-            print(f"Error while searching messages: {e}")
-            await txt.delete()
-            await message.reply("An error occurred while searching.")
-            return
+               print(f"Error while searching messages: {e}")
+               await message.reply("An error occurred while searching.")
+               return
 
         # Handle no results
          if not search_results:
@@ -71,13 +72,15 @@ async def message_handler(client, message):
          #           for i, search_msg in enumerate(search_results)
          #       ]
          #   )
-         result_message = "\n\n".join(
-               [
-                  f"✅ **Result {i + 1}:**\n[{match.group(2)}]({match.group(1)})"
-                  for i, search_msg in enumerate(search_results)
-                  if (match := re.match(r"(https?://[^\s]+) \((.+?)\)", search_msg.text))
-               ]
-            )
+         # result_message = "\n\n".join(
+         #       [
+         #          f"✅ **Result {i + 1}:**\n[{match.group(2)}]({match.group(1)})"
+         #          for i, search_msg in enumerate(search_results)
+         #          if (match := re.match(r"(https?://[^\s]+) \((.+?)\)", search_msg.text))
+         #       ]
+         #    )
+         result_message = "\n\n".join([f"✅ **Result {i + 1}:**\n{url}" for i, url in enumerate(search_results)])
+         print('got result')
          response = (
             f"**Search Results for '{queryz}':**\n\n"
             f"{result_message}\n\n"
