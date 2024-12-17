@@ -12,12 +12,11 @@ from telethon import TelegramClient
 from telethon.sessions import StringSession
 
 
-Lazyuserbot = TelegramClient(StringSession(
-    USER_SESSION_STRING), API_ID, API_HASH)
-      #   await lazydeveloperrsession.start()
+Lazyuserbot = TelegramClient(StringSession(USER_SESSION_STRING), API_ID, API_HASH)
+   #   await lazydeveloperrsession.start()
 
 
-@Client.on_message(filters.group & filters.text & filters.incoming & ~filters.command)
+@Client.on_message(filters.group & filters.text & filters.incoming & ~filters.command(['start']))
 async def message_handler(client, message):
       try:
          if message.text.startswith("/"):
