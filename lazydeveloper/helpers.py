@@ -1,12 +1,6 @@
 
 import re
 from config import *
-import json
-from pyrogram import Client
-from pyrogram.types import Message
-from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
-from lazydeveloper.lazydb import db
-import requests
 
 import re
 async def validate_query(q):
