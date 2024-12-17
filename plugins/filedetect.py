@@ -39,7 +39,7 @@ async def message_handler(client, message):
          print(f"Search Query: {queryz}")
          txt = await message.reply(f"**Searching for links matching:** `{queryz}` 🔍")
 
-        # Start search logic
+      #   Start search logic
          # search_results = []
          # try:
          #    # Search for messages containing the query term in the database channel
@@ -54,27 +54,47 @@ async def message_handler(client, message):
          #       await message.reply("An error occurred while searching.")
          #       return
          # Start search logic
+         # search_results = []
+         # try:
+         #    # Search for messages containing the query term in the database channel
+         #    async for search_msg in Lazyuserbot.iter_messages(DB_CHANNEL, search=queryz, limit=5):
+         #       if search_msg.text:
+         #          # Look for a URL in the first line and movie name in the second line
+         #          lines = search_msg.text.split("\n")
+         #          if len(lines) > 1:
+         #                target_url = lines[0].strip()  # The first line is the URL
+         #                movie_name = lines[1].strip()  # The second line is the movie name
+
+         #                # Clean movie name by removing parentheses
+         #                movie_name = re.sub(r"[()]", "", movie_name)
+
+         #                # Append the formatted result: movie name and URL
+         #                search_results.append((movie_name, target_url))
+         # except Exception as e:
+         #       print(f"Error while searching messages: {e}")
+         #       await message.reply("An error occurred while searching.")
+         #       return
          search_results = []
          try:
             # Search for messages containing the query term in the database channel
             async for search_msg in Lazyuserbot.iter_messages(DB_CHANNEL, search=queryz, limit=5):
                if search_msg.text:
-                  # Look for a URL in the first line and movie name in the second line
-                  lines = search_msg.text.split("\n")
-                  if len(lines) > 1:
-                        target_url = lines[0].strip()  # The first line is the URL
-                        movie_name = lines[1].strip()  # The second line is the movie name
-
-                        # Clean movie name by removing parentheses
-                        movie_name = re.sub(r"[()]", "", movie_name)
-
-                        # Append the formatted result: movie name and URL
+                     # Look for a URL in the first line
+                     match = re.match(r"(https?://[^\s]+)", search_msg.text)
+                     if match:
+                        target_url = match.group(1).strip()  # Extract the URL
+                        
+                        # Extract the movie name from text in parentheses ()
+                        movie_name_match = re.search(r"\(([^)]+)\)", search_msg.text)
+                        movie_name = movie_name_match.group(1).strip() if movie_name_match else "Missing title 😂"
+                        
+                        # Append the result as a tuple of (movie_name, target_url)
                         search_results.append((movie_name, target_url))
          except Exception as e:
-               print(f"Error while searching messages: {e}")
-               await message.reply("An error occurred while searching.")
-               return
-         
+            print(f"Error while searching messages: {e}")
+            await message.reply("An error occurred while searching.")
+            return
+ 
         # Handle no results
          if not search_results:
             no_result_text = (
@@ -100,7 +120,8 @@ async def message_handler(client, message):
          #          if (match := re.match(r"(https?://[^\s]+) \((.+?)\)", search_msg.text))
          #       ]
          #    )
-         result_message = "\n\n".join([f"✅ **Result {i + 1}:**\n{url}" for i, url in enumerate(search_results)])
+         # result_message = "\n\n".join([f"✅ **Result {i + 1}:**\n{url}" for i, url in enumerate(search_results)])
+         result_message = "\n\n".join([f"<blockquote>🎥 <b>{movie_name}</b>\n<b>Link:</b> {target_url}</blockquote>" for movie_name, target_url in search_results])
          print('got result')
          response = (
             f"**Search Results for '{queryz}':**\n\n"
