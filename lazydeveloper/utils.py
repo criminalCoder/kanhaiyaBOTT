@@ -1,55 +1,19 @@
-import math
-import time 
-from lazydeveloper.txt import lazyvars
+
+# ====================== 💘❤👩‍💻====================================
+#    ==> P O W E R E D - B Y - 🤞 L A Z Y D E V E L O P E  R        |
+# ==================================================================
+
+from lazydeveloper.txt import lazydeveloper
 from pyrogram.errors import UserNotParticipant
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from pyrogram import enums
-from lazydeveloper.txt import lazyvars
-import asyncio
-from config import ADMIN, LOG_CHANNEL
 
-async def progress_for_pyrogram(
-    current,
-    total,
-    ud_type,
-    message,
-    start
-    ):
-    now = time.time()
-    diff = now - start
-    if round(diff % 10.00) == 0 or current == total:
-        # if round(current / total * 100, 0) % 5 == 0:
-        percentage = current * 100 / total
-        speed = current / diff
-        elapsed_time = round(diff) * 1000
-        time_to_completion = round((total - current) / speed) * 1000
-        estimated_total_time = elapsed_time + time_to_completion
 
-        elapsed_time = TimeFormatter(milliseconds=elapsed_time)
-        estimated_total_time = TimeFormatter(milliseconds=estimated_total_time)
 
-        progress = "{0}{1}\n".format(
-            ''.join(["█" for i in range(math.floor(percentage / 5))]),
-            ''.join(["░" for i in range(20 - math.floor(percentage / 5))])
-            )
+# ====================== 💘❤👩‍💻====================================
+#    ==> P O W E R E D - B Y - 🤞 L A Z Y D E V E L O P E  R        |
+# ==================================================================
 
-        tmp = progress + lazyvars.PROGRESS_BAR.format(
-            round(percentage, 2),
-            humanbytes(current),
-            humanbytes(total),
-            humanbytes(speed),
-            estimated_total_time if estimated_total_time != '' else "0 s"
-        )
-        try:
-            await message.edit(
-                text="{}\n{}".format(
-                    ud_type,
-                    tmp
-                ),
-                parse_mode=enums.ParseMode.HTML
-            )
-        except:
-            pass
 
 def humanbytes(size):
     # https://stackoverflow.com/a/49361727/4723940
@@ -96,13 +60,11 @@ async def not_subscribed(_, client, message):
          return False 
    return True
          
-async def initate_lazy_verification(client, message):
-    user_id = message.from_user.id
-    if user_id not in ADMIN:
-        await client.send_message(user_id, "I can't cheat my owner 💔!")
-        await asyncio.sleep(2)
-        await client.send_message(LOG_CHANNEL, f"<blockquote>#ALERT</blockquote> \nA user tried to start me\n\n⍟ Name : {message.from_user.first_name}\n⍟ UserID : {user_id}\n⍟ ID-LINK : [{message.from_user.first_name}](tg://user?id={message.from_user.id})")
-        return False
-    return True
 
+
+
+
+# ====================== 💘❤👩‍💻====================================
+#    ==> P O W E R E D - B Y - 🤞 L A Z Y D E V E L O P E  R        |
+# ==================================================================
 

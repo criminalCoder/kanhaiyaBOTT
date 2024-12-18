@@ -2,6 +2,10 @@
 import re
 from config import *
 
+# ====================== 💘❤👩‍💻====================================
+#    ==> P O W E R E D - B Y - 🤞 L A Z Y D E V E L O P E  R        |
+# ==================================================================
+
 import re
 async def validate_query(q):
     query = q
@@ -9,12 +13,11 @@ async def validate_query(q):
     if len(query) < 2:
         return False
    
-    # Checking if the message contains any of the following:
-    #         1. /
-    #         2. ,
-    #         3. .
-    #         4. Emojis
-    #         If it does, it will return.
+
+# ====================== 💘❤👩‍💻====================================
+#    ==> P O W E R E D - B Y - 🤞 L A Z Y D E V E L O P E  R        |
+# ==================================================================
+
     if re.findall(r"((^\/|^,|^:|^\.|^[\U0001F600-\U000E007F]).*)", query):
         return False
     
@@ -27,6 +30,10 @@ async def validate_query(q):
     return query.strip()
 
 
+# ====================== 💘❤👩‍💻====================================
+#    ==> P O W E R E D - B Y - 🤞 L A Z Y D E V E L O P E  R        |
+# ==================================================================
+
 class AsyncIter:    
     def __init__(self, items):    
         self.items = items    
@@ -34,3 +41,8 @@ class AsyncIter:
     async def __aiter__(self):    
         for item in self.items:    
             yield item  
+
+
+# ====================== 💘❤👩‍💻====================================
+#    ==> P O W E R E D - B Y - 🤞 L A Z Y D E V E L O P E  R        |
+# ==================================================================
